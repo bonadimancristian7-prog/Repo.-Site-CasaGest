@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasaGest - Gerenciador Residencial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.94) 0%,
+                rgba(30, 41, 59, 0.90) 100%),
+                url('https://picsum.photos/id/1015/1920/1080') center/cover no-repeat fixed;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(147, 197, 253, 0.5);
+            animation: floatParticle 28s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(120vh) scale(0.6); opacity: 0; }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% { transform: translateY(-50vh) scale(1.4); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen hero-bg overflow-x-hidden">
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <div class="relative z-10 min-h-screen">
+        <!-- Header -->
+        <header class="border-b border-white/10 backdrop-blur-xl bg-slate-900/80 sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-xl">🏠</div>
+                    <div>
+                        <h1 class="title-font text-3xl font-semibold tracking-tighter">CasaGest</h1>
+                        <p class="text-xs text-slate-400 -mt-1">Feira de Ciências 2026</p>
+                    </div>
+                </div>
+
+                <nav class="flex items-center gap-8 text-sm font-medium">
+                    <a onclick="navigateTo('home')" class="cursor-pointer hover:text-blue-400 transition-colors flex items-center gap-2 nav-link active">
+                        <i class="fas fa-home"></i> Início
+                    </a>
+                    <a onclick="navigateTo('moradores')" class="cursor-pointer hover:text-blue-400 transition-colors flex items-center gap-2 nav-link">
+                        <i class="fas fa-users"></i> Moradores
+                    </a>
+                    <a onclick="navigateTo('contas')" class="cursor-pointer hover:text-blue-400 transition-colors flex items-center gap-2 nav-link">
+                        <i class="fas fa-receipt"></i> Contas
+                    </a>
+                    <a onclick="navigateTo('perfil')" class="cursor-pointer hover:text-blue-400 transition-colors flex items-center gap-2 nav-link">
+                        <i class="fas fa-user"></i> Perfil
+                    </a>
+                </nav>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-xl hover:bg-white/10 rounded-2xl transition-colors">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div onclick="navigateTo('perfil')" class="flex items-center gap-3 cursor-pointer">
+                        <div class="text-right">
+                            <p class="text-sm font-medium">João Silva</p>
+                            <p class="text-xs text-slate-400">Titular</p>
+                        </div>
+                        <div class="w-9 h-9 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center text-lg">👤</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-6 py-10">
+            <!-- HOME / BUSCA -->
+            <div id="home-section">
+                <div class="glass rounded-3xl p-10">
+                    <div class="max-w-2xl mx-auto text-center">
+                        <h2 class="text-5xl title-font font-semibold tracking-tighter mb-4">Qual o seu endereço?</h2>
+                        <p class="text-slate-400 mb-8">Digite o CEP e buscaremos automaticamente todas as contas vinculadas.</p>
+                    </div>
+
+                    <div class="max-w-lg mx-auto">
+                        <div class="flex gap-3">
+                            <input id="cep-input" 
+                                   type="text" 
+                                   maxlength="9"
+                                   placeholder="Digite o CEP (ex: 01234-567)"
+                                   class="flex-1 bg-slate-900/80 border border-white/20 focus:border-blue-500 rounded-3xl px-8 py-6 text-lg outline-none transition-all">
+                            <button onclick="buscarPorCEP()" 
+                                    class="bg-blue-600 hover:bg-blue-500 px-10 rounded-3xl font-semibold flex items-center gap-3 transition-all active:scale-95">
+                                <i class="fas fa-search"></i>
+                                BUSCAR
+                            </button>
+                        </div>
+                        <p class="text-center text-xs text-slate-500 mt-3">ViaCEP • Integração automática</p>
+                    </div>
+                </div>
+
+                <!-- Resultado -->
+                <div id="result-section" class="hidden mt-8 glass rounded-3xl p-8">
+                    <div class="flex justify-between mb-8">
+                        <div class="flex items-center gap-4">
+                            <i class="fas fa-map-marker-alt text-4xl text-blue-400"></i>
+                            <div>
+                                <h3 id="endereco-completo" class="text-2xl font-semibold"></h3>
+                                <p id="bairro-cidade" class="text-slate-400"></p>
+                            </div>
+                        </div>
+                        <button onclick="novaBusca()" class="px-6 py-3 text-sm border border-white/30 hover:bg-white/10 rounded-2xl flex items-center gap-2">
+                            <i class="fas fa-redo"></i> Nova Busca
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Moradores -->
+                        <div class="lg:col-span-5">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-xl font-semibold">Moradores</h4>
+                                <button onclick="adicionarMorador()" class="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1">
+                                    <i class="fas fa-plus"></i> Adicionar
+                                </button>
+                            </div>
+                            <div id="moradores-list" class="space-y-4"></div>
+                        </div>
+
+                        <!-- Contas -->
+                        <div class="lg:col-span-7">
+                            <div class="flex justify-between items-center mb-6">
+                                <h4 class="text-xl font-semibold">Contas do Mês</h4>
+                                <button onclick="adicionarConta()" class="bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-2xl text-sm flex items-center gap-2">
+                                    <i class="fas fa-plus"></i> Nova Conta
+                                </button>
+                            </div>
+                            <div id="contas-list" class="space-y-4"></div>
+
+                            <!-- Totais -->
+                            <div class="mt-8 grid grid-cols-3 gap-4">
+                                <div class="glass rounded-3xl p-6 text-center">
+                                    <p class="text-xs text-slate-400">TOTAL DEVIDO</p>
+                                    <p id="total-devido" class="text-4xl font-bold text-red-400 title-font">R$ 0,00</p>
+                                </div>
+                                <div class="glass rounded-3xl p-6 text-center">
+                                    <p class="text-xs text-slate-400">PAGO</p>
+                                    <p id="total-pago" class="text-4xl font-bold text-emerald-400 title-font">R$ 0,00</p>
+                                </div>
+                                <div class="glass rounded-3xl p-6 text-center">
+                                    <p class="text-xs text-slate-400">ECONOMIA</p>
+                                    <p id="saldo" class="text-4xl font-bold text-cyan-400 title-font">R$ 0,00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PERFIL -->
+            <div id="perfil-section" class="hidden">
+                <div class="max-w-2xl mx-auto glass rounded-3xl p-10">
+                    <div class="flex items-center gap-6 mb-10">
+                        <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center text-5xl">👤</div>
+                        <div>
+                            <h2 class="text-4xl title-font font-semibold">João Silva</h2>
+                            <p class="text-slate-400">CPF: 123.456.789-00</p>
+                            <p class="text-emerald-400 text-sm mt-1">• Titular da conta</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-medium mb-4 text-lg">Informações Pessoais</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between py-3 border-b border-white/10">
+                                    <span class="text-slate-400">Email</span>
+                                    <span>joao@email.com</span>
+                                </div>
+                                <div class="flex justify-between py-3 border-b border-white/10">
+                                    <span class="text-slate-400">Telefone</span>
+                                    <span>(11) 98765-4321</span>
+                                </div>
+                                <div class="flex justify-between py-3 border-b border-white/10">
+                                    <span class="text-slate-400">Endereço Atual</span>
+                                    <span id="perfil-endereco" class="text-right"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-medium mb-4 text-lg">Estatísticas</h3>
+                            <div class="bg-slate-900/50 rounded-3xl p-6 space-y-6">
+                                <div class="flex justify-between">
+                                    <span>Contas pagas este ano</span>
+                                    <span class="font-semibold text-emerald-400">47/52</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Média mensal</span>
+                                    <span class="font-semibold">R$ 682,40</span>
+                                </div>
+                                <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full w-[85%] bg-gradient-to-r from-emerald-400 to-cyan-400"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MORADORES -->
+            <div id="moradores-section" class="hidden">
+                <h2 class="text-4xl title-font mb-8">Moradores da Residência</h2>
+                <div id="all-moradores-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+
+            <!-- CONTAS -->
+            <div id="contas-section" class="hidden">
+                <h2 class="text-4xl title-font mb-8">Todas as Contas</h2>
+                <div id="full-contas-list" class="space-y-4"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Nova Conta -->
+    <div id="modal-conta" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="glass rounded-3xl p-8 w-full max-w-md">
+            <h3 class="text-2xl mb-6 font-semibold">Adicionar Conta</h3>
+            <input id="nova-conta-tipo" placeholder="Tipo (Luz, Água...)" class="w-full mb-4 bg-slate-900 border border-white/20 rounded-2xl px-6 py-5">
+            <input id="nova-conta-valor" type="number" placeholder="Valor R$" class="w-full mb-6 bg-slate-900 border border-white/20 rounded-2xl px-6 py-5">
+            <div class="flex gap-4">
+                <button onclick="fecharModal()" class="flex-1 py-4 border border-white/30 rounded-2xl">Cancelar</button>
+                <button onclick="salvarConta()" class="flex-1 py-4 bg-blue-600 rounded-2xl">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CEP API ====================
+        async function buscarPorCEP() {
+            let cep = document.getElementById('cep-input').value.trim().replace(/\D/g, '');
+            if (cep.length !== 8) {
+                alert("CEP inválido. Digite 8 números.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+
+                if (data.erro) throw new Error();
+
+                const endereco = `${data.logradouro}, ${data.complemento ? data.complemento + ', ' : ''}${data.bairro}`;
+                const cidade = `${data.localidade} - ${data.uf}`;
+
+                document.getElementById('endereco-completo').textContent = endereco || "Endereço encontrado";
+                document.getElementById('bairro-cidade').textContent = cidade;
+                document.getElementById('perfil-endereco').textContent = endereco + ", " + cidade;
+
+                document.getElementById('result-section').classList.remove('hidden');
+                renderMoradores();
+                renderContas();
+            } catch(e) {
+                alert("CEP não encontrado ou erro na consulta.");
+            }
+        }
+
+        // ==================== Dados ====================
+        let moradores = [
+            { nome: "João Silva", cpf: "123.456.789-00", titular: true },
+            { nome: "Maria Oliveira", cpf: "987.654.321-00", titular: false },
+            { nome: "Pedro Silva", cpf: "456.789.123-00", titular: false }
+        ];
+
+        let contas = [
+            { id: 1, tipo: "Energia Elétrica", valor: 245.80, pago: 245.80, venc: "15/07", status: "pago" },
+            { id: 2, tipo: "Água e Esgoto", valor: 92.40, pago: 0, venc: "22/07", status: "pendente" },
+            { id: 3, tipo: "Internet Fibra", valor: 119.90, pago: 119.90, venc: "10/07", status: "pago" },
+            { id: 4, tipo: "Gás", valor: 68.50, pago: 68.50, venc: "18/07", status: "pago" }
+        ];
+
+        // ==================== Render ====================
+        function renderMoradores() {
+            const container = document.getElementById('moradores-list');
+            container.innerHTML = '';
+            moradores.forEach(m => {
+                const div = document.createElement('div');
+                div.className = "glass rounded-2xl p-6 card-hover";
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-semibold">${m.nome}</p>
+                            <p class="text-xs text-slate-400">${m.cpf}</p>
+                        </div>
+                        ${m.titular ? `<span class="px-4 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-2xl">Titular</span>` : ''}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderContas() {
+            const container = document.getElementById('contas-list');
+            container.innerHTML = '';
+            let totalDevido = 0, totalPago = 0;
+
+            contas.forEach(c => {
+                const pendente = c.valor - c.pago;
+                totalDevido += pendente;
+                totalPago += c.pago;
+
+                const div = document.createElement('div');
+                div.className = "glass rounded-3xl p-6 card-hover flex items-center gap-6";
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="font-medium">${c.tipo}</p>
+                                <p class="text-xs text-slate-400">Vence ${c.venc}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-bold text-lg">R$ ${c.valor.toFixed(2)}</p>
+                                ${c.status === 'pago' ? 
+                                    `<span onclick="marcarPendente(${c.id})" class="cursor-pointer text-emerald-400 text-xs">✓ Pago</span>` : 
+                                    `<span onclick="marcarPago(${c.id})" class="cursor-pointer text-amber-400 text-xs hover:text-emerald-400">Pendente</span>`}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('total-devido').textContent = `R$ ${totalDevido.toFixed(2)}`;
+            document.getElementById('total-pago').textContent = `R$ ${totalPago.toFixed(2)}`;
+            document.getElementById('saldo').textContent = `R$ ${(totalPago - totalDevido).toFixed(2)}`;
+        }
+
+        function marcarPago(id) {
+            const conta = contas.find(c => c.id === id);
+            if (conta) conta.pago = conta.valor;
+            renderContas();
+        }
+
+        function marcarPendente(id) {
+            const conta = contas.find(c => c.id === id);
+            if (conta) conta.pago = 0;
+            renderContas();
+        }
+
+        // ==================== Modals ====================
+        function adicionarConta() {
+            document.getElementById('modal-conta').classList.remove('hidden');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-conta').classList.add('hidden');
+        }
+
+        function salvarConta() {
+            const tipo = document.getElementById('nova-conta-tipo').value || "Nova Conta";
+            const valor = parseFloat(document.getElementById('nova-conta-valor').value) || 150;
+
+            contas.push({
+                id: Date.now(),
+                tipo: tipo,
+                valor: valor,
+                pago: 0,
+                venc: "30/07",
+                status: "pendente"
+            });
+
+            fecharModal();
+            renderContas();
+        }
+
+        function adicionarMorador() {
+            const nome = prompt("Nome completo do morador:");
+            if (!nome) return;
+            const cpf = prompt("CPF (xxx.xxx.xxx-xx):");
+            if (!cpf) return;
+
+            moradores.push({ nome, cpf, titular: false });
+            renderMoradores();
+        }
+
+        function novaBusca() {
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('cep-input').value = '';
+        }
+
+        // ==================== Navegação ====================
+        function navigateTo(section) {
+            document.querySelectorAll('main > div').forEach(div => div.classList.add('hidden'));
+            
+            if (section === 'home') document.getElementById('home-section').classList.remove('hidden');
+            else if (section === 'perfil') document.getElementById('perfil-section').classList.remove('hidden');
+            else if (section === 'moradores') {
+                document.getElementById('moradores-section').classList.remove('hidden');
+                renderAllMoradores();
+            }
+            else if (section === 'contas') {
+                document.getElementById('contas-section').classList.remove('hidden');
+                renderFullContas();
+            }
+
+            // Atualiza navegação ativa
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active', 'text-blue-400'));
+        }
+
+        function renderAllMoradores() {
+            const container = document.getElementById('all-moradores-list');
+            container.innerHTML = '';
+            moradores.forEach(m => {
+                const div = document.createElement('div');
+                div.className = "glass rounded-3xl p-8 card-hover";
+                div.innerHTML = `<p class="font-medium">${m.nome}</p><p class="text-slate-400">${m.cpf}</p>`;
+                container.appendChild(div);
+            });
+        }
+
+        function renderFullContas() {
+            // Similar ao renderContas mas maior
+            const container = document.getElementById('full-contas-list');
+            container.innerHTML = '';
+            contas.forEach(c => {
+                const div = document.createElement('div');
+                div.className = "glass rounded-3xl p-8 flex justify-between items-center";
+                div.innerHTML = `
+                    <div>
+                        <p class="text-xl">${c.tipo}</p>
+                        <p class="text-slate-400">Venc. ${c.venc}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl font-bold">R$ ${c.valor}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleTheme() {
+            alert("Modo claro/escuro em desenvolvimento! (Protótipo dark por padrão)");
+        }
+
+        // ==================== Inicialização ====================
+        window.onload = () => {
+            // Partículas
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 25 + 20) + 's';
+                p.style.animationDelay = '-' + Math.random() * 30 + 's';
+                p.style.width = p.style.height = (Math.random() * 6 + 3) + 'px';
+                particlesContainer.appendChild(p);
+            }
+
+            // Demo inicial
+            setTimeout(() => {
+                document.getElementById('cep-input').value = "01001-000";
+                buscarPorCEP();
+            }, 600);
+        };
+    </script>
+</body>
+</html>
