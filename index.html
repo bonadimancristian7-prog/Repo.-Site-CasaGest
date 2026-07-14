@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,19 +9,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
-        
-        body { font-family: 'Inter', sans-serif; }
-        .title-font { font-family: 'Space Grotesk', sans-serif; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
         .hero-bg {
-            background: linear-gradient(135deg, rgba(15,23,42,0.92) 0%, rgba(30,41,59,0.88) 100%),
-                      url('https://picsum.photos/id/1015/1920/1080') center/cover fixed;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.88) 100%),
+                url('https://picsum.photos/id/1015/1920/1080') center/cover fixed;
         }
 
         .glass {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .card-hover:hover {
@@ -36,11 +42,17 @@
         }
 
         @keyframes float {
-            0% { transform: translateY(100vh) scale(0.5); }
-            100% { transform: translateY(-100vh) scale(1.5); }
+            0% {
+                transform: translateY(100vh) scale(0.5);
+            }
+
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+            }
         }
     </style>
 </head>
+
 <body class="bg-slate-950 text-slate-100 min-h-screen hero-bg">
 
     <div id="particles" class="fixed inset-0 z-0 pointer-events-none"></div>
@@ -49,7 +61,8 @@
     <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-xl border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg">🏠</div>
+                <div class="w-10 h-10 bg-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg">🏠
+                </div>
                 <div>
                     <h1 class="title-font text-3xl font-semibold tracking-tighter">CasaGest</h1>
                     <p class="text-xs text-slate-400 -mt-1">Feira de Ciências</p>
@@ -70,7 +83,9 @@
                         <p class="font-medium text-sm">João Silva</p>
                         <p class="text-xs text-emerald-400">Online</p>
                     </div>
-                    <div class="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center text-xl">👤</div>
+                    <div
+                        class="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center text-xl">
+                        👤</div>
                 </div>
                 <button id="hamburger" class="md:hidden text-3xl p-2">☰</button>
             </div>
@@ -79,81 +94,91 @@
 
     <main class="max-w-7xl mx-auto px-4 md:px-6 py-8">
         <!-- HOME -->
-        <div id="home-section">
-            <div class="glass rounded-3xl p-8 md:p-12 text-center mb-10">
-                <h2 class="text-4xl md:text-5xl title-font font-semibold mb-4">Organize sua casa</h2>
-                <p class="text-slate-400 max-w-md mx-auto">Digite o CEP e veja todas as contas, moradores e totalizadores automaticamente.</p>
-                
-                <div class="max-w-md mx-auto mt-8">
-                    <div class="flex gap-3">
-                        <input id="cep-input" maxlength="9" placeholder="01234-567" 
-                               class="flex-1 bg-slate-900/80 border border-white/20 rounded-3xl px-6 py-6 text-lg text-center focus:border-blue-500 outline-none">
-                        <button onclick="buscarPorCEP()" 
-                                class="bg-blue-600 hover:bg-blue-500 px-8 rounded-3xl font-semibold">Buscar</button>
+        <div class="glass rounded-3xl p-8 md:p-12 text-center">
+            <h2 class="text-4xl md:text-5xl title-font font-semibold mb-3">Busque seu endereço</h2>
+            <p class="text-slate-400 mb-8">Digite o CEP para carregar tudo automaticamente</p>
+
+            <div class="max-w-md mx-auto">
+                <div class="flex gap-3">
+                    <!-- Campo CEP -->
+                    <input id="cep-input" maxlength="9" placeholder="01234-567"
+                        class="flex-1 bg-slate-900 border border-white/20 focus:border-blue-500 rounded-3xl px-6 py-6 text-lg outline-none text-center md:text-left">
+
+                    <!-- Botão Buscar menor -->
+                    <button onclick="buscarPorCEP()"
+                        class="bg-blue-600 hover:bg-blue-500 px-7 py-6 rounded-3xl font-medium flex items-center gap-2 text-base whitespace-nowrap transition-colors">
+                        <i class="fas fa-search"></i>
+                        <span class="hidden sm:inline">Buscar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultado -->
+        <div id="result-section" class="hidden glass rounded-3xl p-6 md:p-10">
+            <div class="flex flex-col md:flex-row gap-6 justify-between mb-8">
+                <div class="flex items-center gap-4">
+                    <i class="fas fa-map-marker-alt text-4xl text-blue-400"></i>
+                    <div>
+                        <h3 id="endereco-completo" class="text-2xl font-semibold"></h3>
+                        <p id="bairro-cidade" class="text-slate-400"></p>
+                    </div>
+                </div>
+                <button onclick="novaBusca()"
+                    class="px-6 py-3 border border-white/30 rounded-2xl hover:bg-white/10">Nova Busca</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Moradores -->
+                <div class="lg:col-span-5">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-xl font-semibold">Moradores</h4>
+                        <button onclick="adicionarMorador()"
+                            class="text-blue-400 hover:text-white text-sm flex items-center gap-1">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                    <div id="moradores-list" class="space-y-4"></div>
+                </div>
+
+                <!-- Contas -->
+                <div class="lg:col-span-7">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-xl font-semibold">Contas Vinculadas</h4>
+                        <button onclick="adicionarConta()"
+                            class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-2xl text-sm flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Nova Conta
+                        </button>
+                    </div>
+                    <div id="contas-list" class="space-y-4"></div>
+
+                    <!-- Totais -->
+                    <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="glass rounded-3xl p-6 text-center">
+                            <p class="text-slate-400 text-sm">TOTAL DEVIDO</p>
+                            <p id="total-devido" class="text-4xl font-bold text-red-400 title-font">R$ 0,00</p>
+                        </div>
+                        <div class="glass rounded-3xl p-6 text-center">
+                            <p class="text-slate-400 text-sm">PAGO NO MÊS</p>
+                            <p id="total-pago" class="text-4xl font-bold text-emerald-400 title-font">R$ 0,00</p>
+                        </div>
+                        <div class="glass rounded-3xl p-6 text-center">
+                            <p class="text-slate-400 text-sm">SALDO</p>
+                            <p id="saldo" class="text-4xl font-bold text-cyan-400 title-font">R$ 0,00</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Resultado -->
-            <div id="result-section" class="hidden glass rounded-3xl p-6 md:p-10">
-                <div class="flex flex-col md:flex-row gap-6 justify-between mb-8">
-                    <div class="flex items-center gap-4">
-                        <i class="fas fa-map-marker-alt text-4xl text-blue-400"></i>
-                        <div>
-                            <h3 id="endereco-completo" class="text-2xl font-semibold"></h3>
-                            <p id="bairro-cidade" class="text-slate-400"></p>
-                        </div>
-                    </div>
-                    <button onclick="novaBusca()" class="px-6 py-3 border border-white/30 rounded-2xl hover:bg-white/10">Nova Busca</button>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <!-- Moradores -->
-                    <div class="lg:col-span-5">
-                        <div class="flex justify-between items-center mb-6">
-                            <h4 class="text-xl font-semibold">Moradores</h4>
-                            <button onclick="adicionarMorador()" class="text-blue-400 hover:text-white text-sm flex items-center gap-1">
-                                <i class="fas fa-plus"></i> Adicionar
-                            </button>
-                        </div>
-                        <div id="moradores-list" class="space-y-4"></div>
-                    </div>
-
-                    <!-- Contas -->
-                    <div class="lg:col-span-7">
-                        <div class="flex justify-between items-center mb-6">
-                            <h4 class="text-xl font-semibold">Contas Vinculadas</h4>
-                            <button onclick="adicionarConta()" class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-2xl text-sm flex items-center gap-2">
-                                <i class="fas fa-plus"></i> Nova Conta
-                            </button>
-                        </div>
-                        <div id="contas-list" class="space-y-4"></div>
-
-                        <!-- Totais -->
-                        <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                            <div class="glass rounded-3xl p-6 text-center">
-                                <p class="text-slate-400 text-sm">TOTAL DEVIDO</p>
-                                <p id="total-devido" class="text-4xl font-bold text-red-400 title-font">R$ 0,00</p>
-                            </div>
-                            <div class="glass rounded-3xl p-6 text-center">
-                                <p class="text-slate-400 text-sm">PAGO NO MÊS</p>
-                                <p id="total-pago" class="text-4xl font-bold text-emerald-400 title-font">R$ 0,00</p>
-                            </div>
-                            <div class="glass rounded-3xl p-6 text-center">
-                                <p class="text-slate-400 text-sm">SALDO</p>
-                                <p id="saldo" class="text-4xl font-bold text-cyan-400 title-font">R$ 0,00</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
         </div>
 
         <!-- Perfil -->
         <div id="perfil-section" class="hidden">
             <div class="glass rounded-3xl p-8 max-w-2xl mx-auto">
                 <div class="flex flex-col items-center text-center">
-                    <div class="w-28 h-28 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center text-6xl mb-6">👤</div>
+                    <div
+                        class="w-28 h-28 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center text-6xl mb-6">
+                        👤</div>
                     <h2 class="text-4xl title-font font-semibold">João Silva</h2>
                     <p class="text-slate-400">CPF: 123.456.789-00 • Titular</p>
                 </div>
@@ -186,8 +211,10 @@
     <div id="modal-conta" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
         <div class="glass rounded-3xl p-8 w-full max-w-md">
             <h3 class="text-2xl font-semibold mb-6">Adicionar Nova Conta</h3>
-            <input id="tipo-conta" placeholder="Ex: Energia, Água, Internet..." class="w-full px-6 py-5 rounded-2xl bg-slate-900 border border-white/20 mb-4">
-            <input id="valor-conta" type="number" placeholder="Valor em Reais" class="w-full px-6 py-5 rounded-2xl bg-slate-900 border border-white/20 mb-6">
+            <input id="tipo-conta" placeholder="Ex: Energia, Água, Internet..."
+                class="w-full px-6 py-5 rounded-2xl bg-slate-900 border border-white/20 mb-4">
+            <input id="valor-conta" type="number" placeholder="Valor em Reais"
+                class="w-full px-6 py-5 rounded-2xl bg-slate-900 border border-white/20 mb-6">
             <div class="flex gap-4">
                 <button onclick="fecharModal()" class="flex-1 py-4 border border-white/30 rounded-2xl">Cancelar</button>
                 <button onclick="salvarNovaConta()" class="flex-1 py-4 bg-blue-600 rounded-2xl">Salvar</button>
@@ -213,20 +240,20 @@
                 document.getElementById('result-section').classList.remove('hidden');
                 renderMoradores();
                 renderContas();
-            } catch(e) {
+            } catch (e) {
                 alert("CEP não encontrado.");
             }
         }
 
         let moradores = [
-            {nome: "João Silva", cpf: "123.456.789-00", titular: true},
-            {nome: "Maria Oliveira", cpf: "987.654.321-00", titular: false}
+            { nome: "João Silva", cpf: "123.456.789-00", titular: true },
+            { nome: "Maria Oliveira", cpf: "987.654.321-00", titular: false }
         ];
 
         let contas = [
-            {id:1, tipo:"Energia Elétrica", valor:245.80, pago:245.80, venc:"15/07"},
-            {id:2, tipo:"Água", valor:89.90, pago:0, venc:"22/07"},
-            {id:3, tipo:"Internet", valor:119.90, pago:119.90, venc:"10/07"}
+            { id: 1, tipo: "Energia Elétrica", valor: 245.80, pago: 245.80, venc: "15/07" },
+            { id: 2, tipo: "Água", valor: 89.90, pago: 0, venc: "22/07" },
+            { id: 3, tipo: "Internet", valor: 119.90, pago: 119.90, venc: "10/07" }
         ];
 
         function renderMoradores() {
@@ -278,7 +305,7 @@
         function salvarNovaConta() {
             const tipo = document.getElementById('tipo-conta').value || "Nova Conta";
             const valor = parseFloat(document.getElementById('valor-conta').value) || 150;
-            contas.push({id: Date.now(), tipo, valor, pago: 0, venc: "30/07"});
+            contas.push({ id: Date.now(), tipo, valor, pago: 0, venc: "30/07" });
             fecharModal();
             renderContas();
         }
@@ -286,7 +313,7 @@
         function adicionarMorador() {
             const nome = prompt("Nome do morador:");
             if (nome) {
-                moradores.push({nome, cpf: "000.000.000-00", titular: false});
+                moradores.push({ nome, cpf: "000.000.000-00", titular: false });
                 renderMoradores();
             }
         }
@@ -330,4 +357,5 @@
         };
     </script>
 </body>
+
 </html>
