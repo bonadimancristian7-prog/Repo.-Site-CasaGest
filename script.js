@@ -4,7 +4,7 @@ const defaultState = {
   theme: "dark",
   address: { cep: "01001-000", logradouro: "Praça da Sé", bairro: "Sé", localidade: "São Paulo", uf: "SP" },
   residents: [
-    { id: 1, name: "João Silva", cpf: "123.456.789-00", relation: "Titular da residência", owner: true, initials: "JS" },
+    { id: 1, name: "Cristian Bonadiman", cpf: "123.456.789-00", relation: "Titular da residência", owner: true, initials: "CB" },
     { id: 2, name: "Maria Oliveira", cpf: "987.654.321-00", relation: "Cônjuge", owner: false, initials: "MO" },
     { id: 3, name: "Lucas Silva", cpf: "456.789.123-00", relation: "Filho", owner: false, initials: "LS" }
   ],
@@ -136,7 +136,7 @@ async function searchCep(event) {
       uf: data.uf
     };
     save();
-    updateAddress();
+    renderAll();
     notify("Endereço atualizado com sucesso.");
   } catch {
     error.textContent = "CEP não encontrado. Confira e tente novamente.";
