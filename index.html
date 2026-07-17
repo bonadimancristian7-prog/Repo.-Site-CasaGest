@@ -1,361 +1,150 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CasaGest - Gerenciador Residencial</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .title-font {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .hero-bg {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.88) 100%),
-                url('https://picsum.photos/id/1015/1920/1080') center/cover fixed;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .card-hover:hover {
-            transform: translateY(-8px);
-            transition: all 0.3s;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(147, 197, 253, 0.6);
-            animation: float 25s infinite linear;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) scale(0.5);
-            }
-
-            100% {
-                transform: translateY(-100vh) scale(1.5);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CasaGest — gestão residencial simples e inteligente">
+  <title>CasaGest | Gestão residencial</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-icon">⌂</span>
+        <div><strong>CasaGest</strong><small>Gestão residencial</small></div>
+        <button class="icon-btn mobile-only" id="close-menu" aria-label="Fechar menu">×</button>
+      </div>
 
-<body class="bg-slate-950 text-slate-100 min-h-screen hero-bg">
+      <p class="nav-label">NAVEGAÇÃO</p>
+      <nav class="nav" aria-label="Navegação principal">
+        <button class="nav-btn active" data-view="home"><span>⌂</span> Visão geral</button>
+        <button class="nav-btn" data-view="moradores"><span>♙</span> Moradores</button>
+        <button class="nav-btn" data-view="contas"><span>▤</span> Contas</button>
+        <button class="nav-btn" data-view="perfil"><span>◎</span> Meu perfil</button>
+      </nav>
 
-    <div id="particles" class="fixed inset-0 z-0 pointer-events-none"></div>
+      <div class="sidebar-bottom">
+        <div class="safe-card"><span>✓</span><div><strong>Residência protegida</strong><small>Dados salvos neste dispositivo</small></div></div>
+        <p>✦ Projeto • Feira de Ciências</p>
+      </div>
+    </aside>
+    <button class="overlay" id="overlay" aria-label="Fechar menu"></button>
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-xl border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-500 rounded-2xl flex items-center justify-center text-2xl shadow-lg">🏠
-                </div>
-                <div>
-                    <h1 class="title-font text-3xl font-semibold tracking-tighter">CasaGest</h1>
-                    <p class="text-xs text-slate-400 -mt-1">Feira de Ciências</p>
-                </div>
+    <div class="main-column">
+      <header class="topbar">
+        <div class="page-heading">
+          <button class="icon-btn mobile-only" id="open-menu" aria-label="Abrir menu">☰</button>
+          <div><h1 id="page-title">Visão geral</h1><p id="page-subtitle">Tudo o que acontece na sua casa, em um só lugar.</p></div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="theme-btn" aria-label="Alternar tema" title="Alternar tema">☀</button>
+          <button class="icon-btn notification" id="notification-btn" aria-label="Notificações">♢<i></i></button>
+          <button class="profile-button" data-view="perfil"><span class="avatar small">JS</span><span><strong>João Silva</strong><small>Administrador</small></span><b>›</b></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="view active" id="view-home">
+          <article class="hero">
+            <div class="hero-copy">
+              <span class="eyebrow">✦ PAINEL INTELIGENTE</span>
+              <h2>Sua casa organizada.<br>Sua rotina mais leve.</h2>
+              <p>Consulte o endereço, acompanhe contas e organize todos os moradores em uma experiência simples.</p>
+              <form class="cep-form" id="cep-form">
+                <label class="input-box"><span>⌖</span><input id="cep" inputmode="numeric" maxlength="9" placeholder="Digite o CEP" value="01001-000" aria-label="CEP"></label>
+                <button class="primary" id="cep-button">⌕ Buscar endereço</button>
+              </form>
+              <p class="error" id="cep-error"></p>
             </div>
-
-            <nav class="hidden md:flex gap-8 font-medium">
-                <a onclick="navigateTo('home')" class="nav-link cursor-pointer hover:text-blue-400">Início</a>
-                <a onclick="navigateTo('moradores')" class="nav-link cursor-pointer hover:text-blue-400">Moradores</a>
-                <a onclick="navigateTo('contas')" class="nav-link cursor-pointer hover:text-blue-400">Contas</a>
-                <a onclick="navigateTo('perfil')" class="nav-link cursor-pointer hover:text-blue-400">Perfil</a>
-            </nav>
-
-            <div class="flex items-center gap-4">
-                <button onclick="toggleTheme()" class="text-xl p-2 hover:bg-white/10 rounded-xl">🌗</button>
-                <div onclick="navigateTo('perfil')" class="flex items-center gap-3 cursor-pointer">
-                    <div class="hidden sm:block text-right">
-                        <p class="font-medium text-sm">João Silva</p>
-                        <p class="text-xs text-emerald-400">Online</p>
-                    </div>
-                    <div
-                        class="w-9 h-9 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex items-center justify-center text-xl">
-                        👤</div>
-                </div>
-                <button id="hamburger" class="md:hidden text-3xl p-2">☰</button>
+            <div class="address-card">
+              <span class="pin">⌖</span>
+              <div><small>ENDEREÇO ATUAL</small><strong id="address-street">Praça da Sé</strong><p id="address-city">Sé • São Paulo/SP</p><span id="address-cep">CEP 01001-000</span></div>
+              <em>✓ Verificado</em>
             </div>
-        </div>
-    </header>
+          </article>
 
-    <main class="max-w-7xl mx-auto px-4 md:px-6 py-8">
-        <!-- HOME -->
-        <div class="glass rounded-3xl p-8 md:p-12 text-center">
-            <h2 class="text-4xl md:text-5xl title-font font-semibold mb-3">Busque seu endereço</h2>
-            <p class="text-slate-400 mb-8">Digite o CEP para carregar tudo automaticamente</p>
+          <div class="stats">
+            <article><span class="stat-icon blue">♙</span><div><small>Moradores</small><strong id="stat-residents">3</strong><p>pessoas vinculadas</p></div></article>
+            <article><span class="stat-icon violet">▤</span><div><small>Contas do mês</small><strong id="stat-accounts">4</strong><p id="stat-pending-count">2 aguardando pagamento</p></div></article>
+            <article><span class="stat-icon green">✓</span><div><small>Total pago</small><strong id="stat-paid">R$ 0,00</strong><p id="stat-percent">0% das despesas</p></div></article>
+            <article><span class="stat-icon amber">◷</span><div><small>A pagar</small><strong id="stat-pending">R$ 0,00</strong><p>neste ciclo mensal</p></div></article>
+          </div>
 
-            <div class="max-w-md mx-auto">
-                <div class="flex gap-3">
-                    <!-- Campo CEP -->
-                    <input id="cep-input" maxlength="9" placeholder="01234-567"
-                        class="flex-1 bg-slate-900 border border-white/20 focus:border-blue-500 rounded-3xl px-6 py-6 text-lg outline-none text-center md:text-left">
+          <div class="dashboard-grid">
+            <article class="panel">
+              <div class="panel-title"><div><small>RESUMO FINANCEIRO</small><h3>Despesas de julho</h3></div><button class="link-btn" data-view="contas">Ver todas →</button></div>
+              <div class="progress-box"><div><span><small>Total do mês</small><strong id="month-total">R$ 0,00</strong></span><b id="paid-percent">0% pago</b></div><div class="progress"><i id="progress-bar"></i></div></div>
+              <div class="preview-list" id="accounts-preview"></div>
+            </article>
+            <article class="panel residents-panel">
+              <div class="panel-title"><div><small>MINHA CASA</small><h3>Moradores</h3></div><button class="add-icon" data-open="resident-modal">+</button></div>
+              <div id="residents-preview"></div>
+              <button class="secondary full" data-view="moradores">Gerenciar moradores <span>›</span></button>
+            </article>
+          </div>
+        </section>
 
-                    <!-- Botão Buscar menor -->
-                    <button onclick="buscarPorCEP()"
-                        class="bg-blue-600 hover:bg-blue-500 px-7 py-6 rounded-3xl font-medium flex items-center gap-2 text-base whitespace-nowrap transition-colors">
-                        <i class="fas fa-search"></i>
-                        <span class="hidden sm:inline">Buscar</span>
-                    </button>
-                </div>
+        <section class="view" id="view-moradores">
+          <div class="section-toolbar"><div><strong id="resident-count">0 pessoas cadastradas</strong><p>Mantenha os dados dos moradores sempre atualizados.</p></div><button class="primary" data-open="resident-modal">＋ Adicionar morador</button></div>
+          <div class="cards-grid" id="residents-grid"></div>
+        </section>
+
+        <section class="view" id="view-contas">
+          <div class="summary-grid">
+            <article><small>Total do mês</small><strong id="summary-total">R$ 0,00</strong><p id="summary-count">0 contas cadastradas</p></article>
+            <article class="positive"><small>Já foi pago</small><strong id="summary-paid">R$ 0,00</strong><p>✓ Pagamentos concluídos</p></article>
+            <article class="warning"><small>Falta pagar</small><strong id="summary-pending">R$ 0,00</strong><p id="summary-pending-count">0 contas pendentes</p></article>
+          </div>
+          <article class="panel accounts-panel">
+            <div class="accounts-toolbar">
+              <div class="tabs"><button class="active" data-filter="todas">Todas</button><button data-filter="pendentes">Pendentes</button><button data-filter="pagas">Pagas</button></div>
+              <div class="toolbar-actions"><label class="search"><span>⌕</span><input id="account-search" placeholder="Buscar conta"></label><button class="primary" data-open="account-modal">＋ Nova conta</button></div>
             </div>
-        </div>
+            <div id="accounts-list"></div>
+          </article>
+        </section>
 
-        <!-- Resultado -->
-        <div id="result-section" class="hidden glass rounded-3xl p-6 md:p-10">
-            <div class="flex flex-col md:flex-row gap-6 justify-between mb-8">
-                <div class="flex items-center gap-4">
-                    <i class="fas fa-map-marker-alt text-4xl text-blue-400"></i>
-                    <div>
-                        <h3 id="endereco-completo" class="text-2xl font-semibold"></h3>
-                        <p id="bairro-cidade" class="text-slate-400"></p>
-                    </div>
-                </div>
-                <button onclick="novaBusca()"
-                    class="px-6 py-3 border border-white/30 rounded-2xl hover:bg-white/10">Nova Busca</button>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Moradores -->
-                <div class="lg:col-span-5">
-                    <div class="flex justify-between items-center mb-6">
-                        <h4 class="text-xl font-semibold">Moradores</h4>
-                        <button onclick="adicionarMorador()"
-                            class="text-blue-400 hover:text-white text-sm flex items-center gap-1">
-                            <i class="fas fa-plus"></i> Adicionar
-                        </button>
-                    </div>
-                    <div id="moradores-list" class="space-y-4"></div>
-                </div>
-
-                <!-- Contas -->
-                <div class="lg:col-span-7">
-                    <div class="flex justify-between items-center mb-6">
-                        <h4 class="text-xl font-semibold">Contas Vinculadas</h4>
-                        <button onclick="adicionarConta()"
-                            class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-2xl text-sm flex items-center gap-2">
-                            <i class="fas fa-plus"></i> Nova Conta
-                        </button>
-                    </div>
-                    <div id="contas-list" class="space-y-4"></div>
-
-                    <!-- Totais -->
-                    <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div class="glass rounded-3xl p-6 text-center">
-                            <p class="text-slate-400 text-sm">TOTAL DEVIDO</p>
-                            <p id="total-devido" class="text-4xl font-bold text-red-400 title-font">R$ 0,00</p>
-                        </div>
-                        <div class="glass rounded-3xl p-6 text-center">
-                            <p class="text-slate-400 text-sm">PAGO NO MÊS</p>
-                            <p id="total-pago" class="text-4xl font-bold text-emerald-400 title-font">R$ 0,00</p>
-                        </div>
-                        <div class="glass rounded-3xl p-6 text-center">
-                            <p class="text-slate-400 text-sm">SALDO</p>
-                            <p id="saldo" class="text-4xl font-bold text-cyan-400 title-font">R$ 0,00</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-
-        <!-- Perfil -->
-        <div id="perfil-section" class="hidden">
-            <div class="glass rounded-3xl p-8 max-w-2xl mx-auto">
-                <div class="flex flex-col items-center text-center">
-                    <div
-                        class="w-28 h-28 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center text-6xl mb-6">
-                        👤</div>
-                    <h2 class="text-4xl title-font font-semibold">João Silva</h2>
-                    <p class="text-slate-400">CPF: 123.456.789-00 • Titular</p>
-                </div>
-                <div class="mt-12 grid grid-cols-2 gap-8 text-sm">
-                    <div class="space-y-4">
-                        <p><strong>Email:</strong> joao@email.com</p>
-                        <p><strong>Telefone:</strong> (11) 98765-4321</p>
-                    </div>
-                    <div class="space-y-4">
-                        <p><strong>Endereço:</strong> <span id="perfil-endereco"></span></p>
-                        <p><strong>Contas pagas este ano:</strong> 47 de 52</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Moradores e Contas (outras seções) -->
-        <div id="moradores-section" class="hidden">
-            <h2 class="text-3xl title-font mb-8">Todos os Moradores</h2>
-            <div id="all-moradores-list" class="grid md:grid-cols-2 gap-6"></div>
-        </div>
-
-        <div id="contas-section" class="hidden">
-            <h2 class="text-3xl title-font mb-8">Histórico de Contas</h2>
-            <div id="full-contas-list" class="space-y-6"></div>
-        </div>
-    </main>
-
-    <!-- Modal Nova Conta -->
-    <div id="modal-conta" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="glass rounded-3xl p-8 w-full max-w-md">
-            <h3 class="text-2xl font-semibold mb-6">Adicionar Nova Conta</h3>
-            <input id="tipo-conta" placeholder="Ex: Energia, Água, Internet..."
-                class="w-full px-6 py-5 rounded-2xl bg-slate-900 border border-white/20 mb-4">
-            <input id="valor-conta" type="number" placeholder="Valor em Reais"
-                class="w-full px-6 py-5 rounded-2xl bg-slate-900 border border-white/20 mb-6">
-            <div class="flex gap-4">
-                <button onclick="fecharModal()" class="flex-1 py-4 border border-white/30 rounded-2xl">Cancelar</button>
-                <button onclick="salvarNovaConta()" class="flex-1 py-4 bg-blue-600 rounded-2xl">Salvar</button>
-            </div>
-        </div>
+        <section class="view" id="view-perfil">
+          <div class="profile-layout">
+            <article class="panel profile-card">
+              <div class="profile-cover"></div>
+              <div class="profile-identity"><span class="avatar large">JS</span><div><h2>João Silva</h2><p>Administrador da residência</p></div><em>✓ Perfil verificado</em></div>
+              <div class="profile-info">
+                <div><small>✉ E-mail</small><strong>joao@email.com</strong></div><div><small>☎ Telefone</small><strong>(11) 98765-4321</strong></div>
+                <div><small>⌖ Endereço</small><strong id="profile-address">Praça da Sé, Sé</strong></div><div><small>✓ CPF</small><strong>123.456.789-00</strong></div>
+              </div>
+            </article>
+            <aside class="profile-side">
+              <article class="panel completion"><span class="ring">92%</span><div><small>SEU PERFIL</small><h3>Quase completo!</h3><p>Seus dados principais estão atualizados.</p></div></article>
+              <article class="panel preferences"><div class="panel-title"><div><small>PREFERÊNCIAS</small><h3>Configurações</h3></div><span>⚙</span></div><button id="preference-theme"><span>☀ Aparência do painel</span><b id="theme-label">Escuro</b></button><button id="report-btn"><span>◉ Relatório mensal</span><b>Ativado</b></button></article>
+            </aside>
+          </div>
+        </section>
+      </main>
     </div>
+  </div>
 
-    <script>
-        // CEP
-        async function buscarPorCEP() {
-            let cep = document.getElementById('cep-input').value.trim().replace(/\D/g, '');
-            if (cep.length !== 8) return alert("Digite um CEP válido!");
+  <dialog class="modal" id="account-modal">
+    <form method="dialog" id="account-form">
+      <div class="modal-head"><div><span>▤</span><div><h2>Adicionar nova conta</h2><p>Preencha os dados da despesa.</p></div></div><button type="button" data-close="account-modal" aria-label="Fechar">×</button></div>
+      <label>Nome da conta<input name="type" required placeholder="Ex.: Gás, aluguel, telefone"></label>
+      <div class="form-grid"><label>Categoria<select name="category"><option value="energia">Energia</option><option value="agua">Água</option><option value="internet">Internet</option><option value="outros">Outros</option></select></label><label>Valor (R$)<input name="value" required type="number" min="0.01" step="0.01" placeholder="0,00"></label></div>
+      <label>Data de vencimento<input name="due" required type="date" value="2026-07-30"></label>
+      <div class="modal-actions"><button type="button" data-close="account-modal" class="secondary">Cancelar</button><button class="primary">＋ Adicionar conta</button></div>
+    </form>
+  </dialog>
 
-            try {
-                const resp = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                const data = await resp.json();
-                if (data.erro) throw new Error();
-
-                document.getElementById('endereco-completo').textContent = data.logradouro;
-                document.getElementById('bairro-cidade').textContent = `${data.bairro} - ${data.localidade}/${data.uf}`;
-                document.getElementById('perfil-endereco').textContent = data.logradouro + ", " + data.bairro;
-
-                document.getElementById('result-section').classList.remove('hidden');
-                renderMoradores();
-                renderContas();
-            } catch (e) {
-                alert("CEP não encontrado.");
-            }
-        }
-
-        let moradores = [
-            { nome: "João Silva", cpf: "123.456.789-00", titular: true },
-            { nome: "Maria Oliveira", cpf: "987.654.321-00", titular: false }
-        ];
-
-        let contas = [
-            { id: 1, tipo: "Energia Elétrica", valor: 245.80, pago: 245.80, venc: "15/07" },
-            { id: 2, tipo: "Água", valor: 89.90, pago: 0, venc: "22/07" },
-            { id: 3, tipo: "Internet", valor: 119.90, pago: 119.90, venc: "10/07" }
-        ];
-
-        function renderMoradores() {
-            const container = document.getElementById('moradores-list');
-            container.innerHTML = '';
-            moradores.forEach(m => {
-                let div = document.createElement('div');
-                div.className = "glass rounded-2xl p-6 card-hover";
-                div.innerHTML = `<p class="font-medium">${m.nome}</p><p class="text-xs text-slate-400">${m.cpf}</p>`;
-                container.appendChild(div);
-            });
-        }
-
-        function renderContas() {
-            const container = document.getElementById('contas-list');
-            container.innerHTML = '';
-            let devido = 0, pagoTotal = 0;
-
-            contas.forEach(c => {
-                devido += (c.valor - c.pago);
-                pagoTotal += c.pago;
-
-                let div = document.createElement('div');
-                div.className = "glass rounded-2xl p-6 card-hover";
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-semibold">${c.tipo}</p>
-                            <p class="text-xs text-slate-400">Vence: ${c.venc}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xl font-bold">R$ ${c.valor}</p>
-                            <span class="text-xs ${c.pago === c.valor ? 'text-emerald-400' : 'text-amber-400'}">
-                                ${c.pago === c.valor ? 'Pago' : 'Pendente'}
-                            </span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            document.getElementById('total-devido').textContent = `R$ ${devido.toFixed(2)}`;
-            document.getElementById('total-pago').textContent = `R$ ${pagoTotal.toFixed(2)}`;
-            document.getElementById('saldo').textContent = `R$ ${(pagoTotal - devido).toFixed(2)}`;
-        }
-
-        function adicionarConta() { document.getElementById('modal-conta').classList.remove('hidden'); }
-        function fecharModal() { document.getElementById('modal-conta').classList.add('hidden'); }
-        function salvarNovaConta() {
-            const tipo = document.getElementById('tipo-conta').value || "Nova Conta";
-            const valor = parseFloat(document.getElementById('valor-conta').value) || 150;
-            contas.push({ id: Date.now(), tipo, valor, pago: 0, venc: "30/07" });
-            fecharModal();
-            renderContas();
-        }
-
-        function adicionarMorador() {
-            const nome = prompt("Nome do morador:");
-            if (nome) {
-                moradores.push({ nome, cpf: "000.000.000-00", titular: false });
-                renderMoradores();
-            }
-        }
-
-        function novaBusca() {
-            document.getElementById('result-section').classList.add('hidden');
-        }
-
-        function navigateTo(section) {
-            document.querySelectorAll('main > div').forEach(div => div.classList.add('hidden'));
-            document.getElementById(section + '-section').classList.remove('hidden');
-        }
-
-        function toggleTheme() {
-            alert("Modo claro/escuro será implementado na versão final!");
-        }
-
-        // Menu mobile
-        document.getElementById('hamburger').addEventListener('click', () => {
-            alert("Menu mobile - Em um projeto real, abriríamos um menu lateral aqui.");
-        });
-
-        // Inicialização
-        window.onload = () => {
-            // Cria partículas
-            for (let i = 0; i < 45; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.width = p.style.height = (Math.random() * 6 + 3) + 'px';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDuration = (20 + Math.random() * 30) + 's';
-                p.style.opacity = Math.random() * 0.6 + 0.3;
-                document.getElementById('particles').appendChild(p);
-            }
-
-            // Demo
-            setTimeout(() => {
-                document.getElementById('cep-input').value = "01001-000";
-                buscarPorCEP();
-            }, 600);
-        };
-    </script>
+  <dialog class="modal" id="resident-modal">
+    <form method="dialog" id="resident-form">
+      <div class="modal-head"><div><span>♙</span><div><h2>Adicionar morador</h2><p>Vincule uma pessoa à residência.</p></div></div><button type="button" data-close="resident-modal" aria-label="Fechar">×</button></div>
+      <label>Nome completo<input name="name" required placeholder="Nome do morador"></label>
+      <label>CPF<input name="cpf" required placeholder="000.000.000-00"></label>
+      <label>Vínculo com o titular<select name="relation"><option>Cônjuge</option><option>Filho(a)</option><option>Parente</option><option>Morador</option></select></label>
+      <div class="modal-actions"><button type="button" data-close="resident-modal" class="secondary">Cancelar</button><button class="primary">＋ Adicionar pessoa</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status"><span>✓</span><p></p></div>
 </body>
-
 </html>
